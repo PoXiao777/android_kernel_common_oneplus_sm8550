@@ -664,6 +664,18 @@ config TCP_CONG_CDG
 	    D.A. Hayes and G. Armitage. "Revisiting TCP congestion control using
 	    delay gradients." In Networking 2011. Preprint: http://goo.gl/No3vdg
 
+config TCP_CONG_ROCCET
+	tristate "ROCCET TCP"
+	default n
+	help
+	  TCP ROCCET (RTT oriented CUBIC congestion control exTension) is a
+	  sender-side-only congestion control algorithm based on the TCP CUBIC
+	  protocol stack/TCP CUBIC congestion control algorithm that optimizes
+	  its performance. Especially for networks with large buffers
+	  (wireless, cellular networks), TCP ROCCET has improved performance by
+	  maintaining a similar throughput as CUBIC while reducing latency.
+	  For more information, see: https://arxiv.org/abs/2510.25281
+
 config TCP_CONG_BBR
 	tristate "BBR TCP"
 	default n
@@ -713,6 +725,9 @@ choice
 	config DEFAULT_CDG
 		bool "CDG" if TCP_CONG_CDG=y
 
+	config DEFAULT_ROCCET
+		bool "ROCCET" if TCP_CONG_ROCCET=y
+
 	config DEFAULT_BBR
 		bool "BBR" if TCP_CONG_BBR=y
 
@@ -739,6 +754,7 @@ config DEFAULT_TCP_CONG
 	default "reno" if DEFAULT_RENO
 	default "dctcp" if DEFAULT_DCTCP
 	default "cdg" if DEFAULT_CDG
+	default "roccet" if DEFAULT_ROCCET
 	default "bbr" if DEFAULT_BBR
 	default "cubic"
 
